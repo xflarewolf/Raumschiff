@@ -36,7 +36,7 @@ class Raumschiff {
 class Meteorit: public Raumschiff {
     public:
         Meteorit (int, int, char *z): Raumschiff(x, y, z) {
-            srand(time(NULL));
+            // srand(time(NULL));
             x = rand() %760;
             y = rand() %580;};
         void zeichnen (SDL_Surface *);
@@ -128,7 +128,15 @@ int main(int a, char **b) {
 
     Raumschiff r(100, 100, "raumschiffe.png");
 
-    Meteorit m(0,0, "shot.ppm");
+    Meteorit *m1 = new Meteorit(0, 0, "shot.ppm");
+
+    vector<Meteorit*> meteoriten;
+    meteoriten.push_back(m1);
+
+    for (int i=0; i<20; i++) {
+        Meteorit *m1 = new Meteorit(0, 0, "shot.ppm");
+        meteoriten.push_back(m1);
+    }
 
     for (int i=0; i<10000; i++) {
 
@@ -154,12 +162,16 @@ int main(int a, char **b) {
         s1.bewegen();
         s2.bewegen();
         s3.bewegen();
-        m.bewegen();
         s1.zeichnen(surf);
         s2.zeichnen(surf);
         s3.zeichnen(surf);
         r.zeichnen(surf);
-        m.zeichnen(surf);
+
+        for (int i=0; i<meteoriten.size(); i++) {
+    	meteoriten[i]->bewegen();
+    	meteoriten[i]->zeichnen(surf);
+    }
+
 
         SDL_UpdateWindowSurface(win);
         SDL_Delay(10);
